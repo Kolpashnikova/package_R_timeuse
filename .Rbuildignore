@@ -1,0 +1,10 @@
+^timeuse\.Rproj$
+^\.Rproj\.user$
+data/
+examples/
+README.md
+.Rhistory
+weights.txt
+activities*
+ex_diaries.txt
+index.R
