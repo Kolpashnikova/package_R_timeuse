@@ -90,14 +90,20 @@ tu_tempogram <- function(df, path_to_activity_codes = "data/ATUS_codes.csv", w =
   pb = txtProgressBar(min = 0, max = 1440, initial = 0)
   if(is.null(w)){
     for(i in 1:1440){
-      temp <- seq %>% count((!!sym(paste("V", i, sep = ""))))
+      #temp <- seq %>% count((!!sym(paste("V", i, sep = ""))))
+      # the following two lines helps avoid zeroes
+      seq[[paste("V", i, sep = "")]] <- factor(seq[[paste("V", i, sep = "")]], levels = unique(act_codes$Alphabet))
+      temp <- seq %>% count((!!sym(paste("V", i, sep = ""))), .drop = FALSE)
       rownames(temp) <- temp[[paste("V", i, sep = "")]]
       tempogram[[paste("V", i, sep = "")]] <- temp$n
       setTxtProgressBar(pb,i)
     }
   } else {
     for(i in 1:1440){
-      temp <- seq %>% count((!!sym(paste("V", i, sep = ""))), wt = !!sym(w))
+      #temp <- seq %>% count((!!sym(paste("V", i, sep = ""))), wt = !!sym(w))
+      # the following two lines helps avoid zeroes
+      seq[[paste("V", i, sep = "")]] <- factor(seq[[paste("V", i, sep = "")]], levels = unique(act_codes$Alphabet))
+      temp <- seq %>% count((!!sym(paste("V", i, sep = ""))), wt = !!sym(w), .drop = FALSE)
       rownames(temp) <- temp[[paste("V", i, sep = "")]]
       tempogram[[paste("V", i, sep = "")]] <- temp$n
       setTxtProgressBar(pb,i)
